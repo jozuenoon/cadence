@@ -153,13 +153,25 @@ func AdminDescribeWorkflow(c *cli.Context) {
 			// show history
 			histV2 := cassp.NewHistoryV2PersistenceFromSession(session, bark.NewNopLogger())
 			storeV2 := persistence.NewHistoryV2ManagerImpl(histV2, bark.NewNopLogger())
-			resp, err := storeV2.ReadHistoryBranch(&persistence.ReadHistoryBranchRequest{
+			req := &persistence.ReadHistoryBranchRequest{
 				BranchToken: ms.ExecutionInfo.BranchToken,
 				MinEventID:  1,
 				MaxEventID:  maxEventID,
-			})
+				PageSize:    1000,
+			}
+			resp, err := storeV2.ReadHistoryBranch(req)
 			if err != nil {
-				ErrorAndExit("ReadHistoryBranch err", err)
+				ErrorAndExit("ReadHistoryBranch err 1", err)
+			}
+			fmt.Println("eventsV2:")
+			for _, e := range resp.HistoryEvents {
+				fmt.Print(e.GetEventId(), ",")
+			}
+			fmt.Println("....")
+			req.NextPageToken = resp.NextPageToken
+			resp, err = storeV2.ReadHistoryBranch(req)
+			if err != nil {
+				ErrorAndExit("ReadHistoryBranch err 2", err)
 			}
 			fmt.Println("eventsV2:")
 			for _, e := range resp.HistoryEvents {
@@ -286,7 +298,7 @@ func readOneRow(query *gocql.Query) (map[string]interface{}, error) {
 }
 
 func connectToCassandra(c *cli.Context) *gocql.Session {
-	host := getRequiredOption(c, FlagAddress)
+	host := getRequiredOption(c, FlagHostFile)
 	if !c.IsSet(FlagPort) {
 		ErrorAndExit("port is required", nil)
 	}

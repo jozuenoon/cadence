@@ -98,7 +98,7 @@ func newAdminWorkflowCommands() []cli.Command {
 
 				// for cassandra connection
 				cli.StringFlag{
-					Name:  FlagAddress,
+					Name:  FlagHostFile,
 					Usage: "cassandra host address",
 				},
 				cli.IntFlag{
