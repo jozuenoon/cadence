@@ -47,7 +47,7 @@ func newMetadataManagerProxy(cfg config.Cassandra,
 	if err != nil {
 		return nil, err
 	}
-	metadataMgrV2, err := newMetadataPersistenceV2(cfg, currentClusterName, logger)
+	metadataMgrV2, err := NewMetadataPersistenceV2(cfg, currentClusterName, logger)
 	if err != nil {
 		return nil, err
 	}

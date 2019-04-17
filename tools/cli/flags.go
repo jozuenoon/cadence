@@ -145,6 +145,7 @@ const (
 	FlagIndex                       = "index"
 	FlagBatchSize                   = "batch_size"
 	FlagBatchSizeWithAlias          = FlagBatchSize + ", bs"
+	FlagCurrentClusterName          = "current_cluster"
 )
 
 var flagsForExecution = []cli.Flag{
