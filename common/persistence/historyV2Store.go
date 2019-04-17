@@ -290,7 +290,7 @@ func (m *historyV2ManagerImpl) readHistoryBranch(byBatch bool, request *ReadHist
 		NextPageToken: token.StoreToken,
 	}
 
-	fmt.Println("InternalReadHistoryBranchRequest", req.MinNodeID, req.MaxNodeID)
+	fmt.Println("InternalReadHistoryBranchRequest", req.MinNodeID, req.MaxNodeID, token.LastEventID, token.LastEventVersion)
 	resp, err := m.persistence.ReadHistoryBranch(req)
 	if err != nil {
 		return nil, nil, nil, 0, 0, err
@@ -336,11 +336,13 @@ func (m *historyV2ManagerImpl) readHistoryBranch(byBatch bool, request *ReadHist
 		if firstEvent.GetVersion() < token.LastEventVersion {
 			// version decrease means the this batch are all stale events, we should skip
 			logger.Infof("Stale event batch with smaller version: %v", firstEvent.GetVersion())
+			fmt.Printf("Stale event batch with smaller version: %v \n", firstEvent.GetVersion())
 			continue
 		}
 		if firstEvent.GetEventId() <= token.LastEventID {
 			// we could see it because first batch of next page has a smaller txn_id
 			logger.Infof("Stale event batch with eventID: %v", firstEvent.EventId)
+			fmt.Printf("Stale event batch with eventID: %v", firstEvent.EventId)
 			continue
 		}
 		if firstEvent.GetEventId() != token.LastEventID+1 {
