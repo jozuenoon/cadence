@@ -324,7 +324,7 @@ func (m *historyV2ManagerImpl) readHistoryBranch(byBatch bool, request *ReadHist
 		eventCount := len(es)         // length
 		lastEvent := es[eventCount-1] // last
 
-		fmt.Println("first", firstEvent.GetEventId(), firstEvent.GetVersion())
+		fmt.Println("first-last-1", firstEvent.GetEventId(), firstEvent.GetVersion(), lastEvent.GetEventId(), lastEvent.GetVersion())
 		if firstEvent.GetVersion() != lastEvent.GetVersion() || firstEvent.GetEventId()+int64(eventCount-1) != lastEvent.GetEventId() {
 			// in a single batch, version should be the same, and ID should be continous
 			logger.Errorf("Corrupted event batch, %v, %v, %v, %v, %v", firstEvent.GetVersion(), lastEvent.GetVersion(), firstEvent.GetEventId(), lastEvent.GetEventId(), eventCount)
@@ -356,6 +356,7 @@ func (m *historyV2ManagerImpl) readHistoryBranch(byBatch bool, request *ReadHist
 			}
 		}
 
+		fmt.Println("first-last-2", firstEvent.GetEventId(), firstEvent.GetVersion(), lastEvent.GetEventId(), lastEvent.GetVersion())
 		token.LastEventVersion = firstEvent.GetVersion()
 		token.LastEventID = lastEvent.GetEventId()
 		if byBatch {
