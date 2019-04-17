@@ -290,6 +290,7 @@ func (m *historyV2ManagerImpl) readHistoryBranch(byBatch bool, request *ReadHist
 		NextPageToken: token.StoreToken,
 	}
 
+	fmt.Println("InternalReadHistoryBranchRequest", req.MinNodeID, req.MaxNodeID)
 	resp, err := m.persistence.ReadHistoryBranch(req)
 	if err != nil {
 		return nil, nil, nil, 0, 0, err
@@ -323,6 +324,7 @@ func (m *historyV2ManagerImpl) readHistoryBranch(byBatch bool, request *ReadHist
 		eventCount := len(es)         // length
 		lastEvent := es[eventCount-1] // last
 
+		fmt.Println("first", firstEvent.GetEventId(), firstEvent.GetVersion())
 		if firstEvent.GetVersion() != lastEvent.GetVersion() || firstEvent.GetEventId()+int64(eventCount-1) != lastEvent.GetEventId() {
 			// in a single batch, version should be the same, and ID should be continous
 			logger.Errorf("Corrupted event batch, %v, %v, %v, %v, %v", firstEvent.GetVersion(), lastEvent.GetVersion(), firstEvent.GetEventId(), lastEvent.GetEventId(), eventCount)

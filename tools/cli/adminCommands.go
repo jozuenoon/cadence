@@ -23,6 +23,8 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/sirupsen/logrus"
+	"log"
 
 	"io/ioutil"
 
@@ -150,8 +152,11 @@ func AdminDescribeWorkflow(c *cli.Context) {
 			}
 			prettyPrintJSONObject(branchInfo)
 
+			log2 := logrus.New()
+			log2.Level = logrus.DebugLevel
+			logger := bark.NewLoggerFromLogrus(log2)
 			// show history
-			histV2 := cassp.NewHistoryV2PersistenceFromSession(session, bark.NewNopLogger())
+			histV2 := cassp.NewHistoryV2PersistenceFromSession(session, logger)
 			storeV2 := persistence.NewHistoryV2ManagerImpl(histV2, bark.NewNopLogger())
 			req := &persistence.ReadHistoryBranchRequest{
 				BranchToken: ms.ExecutionInfo.BranchToken,
