@@ -95,6 +95,28 @@ func newAdminWorkflowCommands() []cli.Command {
 					Name:  FlagRunIDWithAlias,
 					Usage: "RunID",
 				},
+
+				// for cassandra connection
+				cli.StringFlag{
+					Name:  FlagAddress,
+					Usage: "cassandra host address",
+				},
+				cli.IntFlag{
+					Name:  FlagPort,
+					Usage: "cassandra port for the host (default is 9042)",
+				},
+				cli.StringFlag{
+					Name:  FlagUsername,
+					Usage: "cassandra username",
+				},
+				cli.StringFlag{
+					Name:  FlagPassword,
+					Usage: "cassandra password",
+				},
+				cli.StringFlag{
+					Name:  FlagKeyspace,
+					Usage: "cassandra keyspace",
+				},
 			},
 			Action: func(c *cli.Context) {
 				AdminDescribeWorkflow(c)

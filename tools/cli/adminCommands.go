@@ -130,6 +130,7 @@ func AdminShowWorkflow(c *cli.Context) {
 func AdminDescribeWorkflow(c *cli.Context) {
 
 	resp := describeMutableState(c)
+	session := connectToCassandra(c)
 
 	prettyPrintJSONObject(resp)
 
@@ -148,6 +149,23 @@ func AdminDescribeWorkflow(c *cli.Context) {
 				ErrorAndExit("thriftrwEncoder.Decode err", err)
 			}
 			prettyPrintJSONObject(branchInfo)
+
+			// show history
+			histV2 := cassp.NewHistoryV2PersistenceFromSession(session, bark.NewNopLogger())
+			storeV2 := persistence.NewHistoryV2ManagerImpl(histV2, bark.NewNopLogger())
+			resp, err := storeV2.ReadHistoryBranch(&persistence.ReadHistoryBranchRequest{
+				BranchToken: ms.ExecutionInfo.BranchToken,
+				MinEventID:  1,
+				MaxEventID:  maxEventID,
+			})
+			if err != nil {
+				ErrorAndExit("ReadHistoryBranch err", err)
+			}
+			fmt.Println("eventsV2:")
+			for _, e := range resp.HistoryEvents {
+				fmt.Print(e.GetEventId(), ",")
+			}
+			fmt.Println("....")
 		}
 	}
 }
