@@ -272,7 +272,7 @@ func (m *CassandraMetadataPersistenceV2) UpdateDomain(request *p.UpdateDomainReq
 	return nil
 }
 
-// GetDomain gert a domain
+// GetDomain get a domain
 func (m *CassandraMetadataPersistenceV2) GetDomain(request *p.GetDomainRequest) (*p.GetDomainResponse, error) {
 	var query *gocql.Query
 	var err error
