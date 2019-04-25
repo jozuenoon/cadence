@@ -135,6 +135,7 @@ func (m *CassandraMetadataPersistenceV2) Close() {
 	}
 }
 
+// CreateDomain create a domain
 // Cassandra does not support conditional updates across multiple tables.  For this reason we have to first insert into
 // 'Domains' table and then do a conditional insert into domains_by_name table.  If the conditional write fails we
 // delete the orphaned entry from domains table.  There is a chance delete entry could fail and we never delete the
@@ -224,6 +225,7 @@ func (m *CassandraMetadataPersistenceV2) CreateDomainInV2Table(request *p.Create
 	return &p.CreateDomainResponse{ID: request.Info.ID}, nil
 }
 
+// UpdateDomain update a domain
 func (m *CassandraMetadataPersistenceV2) UpdateDomain(request *p.UpdateDomainRequest) error {
 	batch := m.session.NewBatch(gocql.LoggedBatch)
 	batch.Query(templateUpdateDomainByNameQueryWithinBatchV2,
@@ -270,6 +272,7 @@ func (m *CassandraMetadataPersistenceV2) UpdateDomain(request *p.UpdateDomainReq
 	return nil
 }
 
+// GetDomain gert a domain
 func (m *CassandraMetadataPersistenceV2) GetDomain(request *p.GetDomainRequest) (*p.GetDomainResponse, error) {
 	var query *gocql.Query
 	var err error
@@ -362,6 +365,7 @@ func (m *CassandraMetadataPersistenceV2) GetDomain(request *p.GetDomainRequest) 
 	}, nil
 }
 
+// ListDomains list all domains
 func (m *CassandraMetadataPersistenceV2) ListDomains(request *p.ListDomainsRequest) (*p.ListDomainsResponse, error) {
 	var query *gocql.Query
 
@@ -421,6 +425,7 @@ func (m *CassandraMetadataPersistenceV2) ListDomains(request *p.ListDomainsReque
 	return response, nil
 }
 
+// DeleteDomain delete a domain
 func (m *CassandraMetadataPersistenceV2) DeleteDomain(request *p.DeleteDomainRequest) error {
 	var name string
 	query := m.session.Query(templateGetDomainQuery, request.ID)
@@ -435,6 +440,7 @@ func (m *CassandraMetadataPersistenceV2) DeleteDomain(request *p.DeleteDomainReq
 	return m.deleteDomain(name, request.ID)
 }
 
+// DeleteDomainByName delete a domain by name
 func (m *CassandraMetadataPersistenceV2) DeleteDomainByName(request *p.DeleteDomainByNameRequest) error {
 	var ID string
 	query := m.session.Query(templateGetDomainByNameQueryV2, constDomainPartition, request.Name)
@@ -448,6 +454,7 @@ func (m *CassandraMetadataPersistenceV2) DeleteDomainByName(request *p.DeleteDom
 	return m.deleteDomain(request.Name, ID)
 }
 
+// GetMetadata get the domain metadata record
 func (m *CassandraMetadataPersistenceV2) GetMetadata() (*p.GetMetadataResponse, error) {
 	var notificationVersion int64
 	query := m.session.Query(templateGetMetadataQueryV2, constDomainPartition, domainMetadataRecordName)

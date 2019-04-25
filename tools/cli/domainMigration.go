@@ -24,9 +24,10 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/uber/cadence/common/log/loggerimpl"
+
 	"github.com/pkg/errors"
 
-	"github.com/uber-common/bark"
 	"github.com/uber/cadence/.gen/go/shared"
 	"github.com/uber/cadence/common"
 	"github.com/uber/cadence/common/persistence"
@@ -52,7 +53,7 @@ func AdminDomainMigration(c *cli.Context) {
 		)
 	}
 
-	logger := bark.NewNopLogger()
+	logger := loggerimpl.NewNopLogger()
 	session := connectToCassandra(c)
 
 	metadataV1Mgr := cassandra.NewMetadataPersistenceWithSession(session, currentCluster, logger)
