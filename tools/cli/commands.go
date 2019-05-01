@@ -1267,7 +1267,7 @@ func doFixLuna(c *cli.Context, domain, wid, rid string) error {
 	currentRunID := resp.WorkflowExecutionInfo.Execution.GetRunId()
 	if currentRunID == rid {
 		fmt.Println("current run is the reset run: ", wid, rid)
-		return nil
+		//return nil
 	}
 
 	skipOpen := c.Bool(FlagSkipCurrent)
