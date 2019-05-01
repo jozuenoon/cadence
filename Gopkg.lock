@@ -558,7 +558,7 @@
   version = "v1.3.2"
 
 [[projects]]
-  digest = "1:29360a122ba04967f6749a9a2a627ba7fec0d0d009cd88de1f21fd562a71470b"
+  digest = "1:492d16f6b665585b940683191d81680e5baae2bfa66bbc748e59fe569c99a8b4"
   name = "github.com/uber-go/kafka-client"
   packages = [
     ".",
@@ -569,8 +569,7 @@
     "kafka",
   ]
   pruneopts = ""
-  revision = "f844be23d24716c68cbc23251406f2fb5ea0fac0"
-  version = "v0.2.1"
+  revision = "ae3303fec6865baaf07767e60d7c26384d8cfb28"
 
 [[projects]]
   digest = "1:861312e1c66a6935183495ad08db511fb7cf434a9da12c49d0be9b7725f3a22b"
