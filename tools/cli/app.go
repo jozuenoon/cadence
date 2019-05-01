@@ -79,11 +79,11 @@ func NewCliApp() *cli.App {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  FlagInputFileWithAlias,
-					Usage: "Input file to use",
+					Usage: "Input file to use for resetting",
 				},
 				cli.StringFlag{
 					Name:  FlagInputFile2,
-					Usage: "Another input file to use",
+					Usage: "Another input file to use for excluding from resetting",
 				},
 				cli.StringFlag{
 					Name:  FlagInputSeparator,
