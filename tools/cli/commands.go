@@ -29,13 +29,12 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"runtime/debug"
 	"strconv"
 	"strings"
 	"time"
-
-	"code.uber.internal/devexp/cadence-tools/.tmp/.go/goroot/src/math/rand"
 
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
